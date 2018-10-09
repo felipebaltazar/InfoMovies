@@ -1,6 +1,7 @@
 ﻿using InfoMovies.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Globalization;
 
 namespace InfoMovies.Tests.ViewHelpers 
 {

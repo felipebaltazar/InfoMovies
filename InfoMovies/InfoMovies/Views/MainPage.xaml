@@ -57,7 +57,7 @@
                                              HorizontalOptions="FillAndExpand"/>
 
                                     <Label Text="{Extensions:Translate Text=MainPage_NoImage}" LineBreakMode="NoWrap" HorizontalOptions="FillAndExpand"
-                                           VerticalOptions="FillAndExpand"TextColor="White" Style="{StaticResource labelStyle}" Grid.Row="0" Grid.Column="0"/>
+                                           VerticalOptions="FillAndExpand" TextColor="White" Style="{StaticResource labelStyle}" Grid.Row="0" Grid.Column="0"/>
 
                                     <ImageLoading:CachedImage x:Name="backgroundImage" HorizontalOptions="FillAndExpand"
                                                                 VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0"
