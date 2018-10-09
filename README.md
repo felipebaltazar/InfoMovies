@@ -2,7 +2,7 @@
 Application to show the list of upcoming movies
 
 
-## Thirt Parties
+## Third Parties
 
 ```Microsoft.AppCenter```
 -Used to track crashs and app insights.
