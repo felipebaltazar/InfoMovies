@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Views:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:local="clr-namespace:InfoMovies"
+                xmlns:Views="clr-namespace:InfoMovies.Views"
+                xmlns:Extensions="clr-namespace:InfoMovies.Extensions"
+                xmlns:Converters="clr-namespace:InfoMovies.Converters"
+                xmlns:ImageLoading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                x:Class="InfoMovies.MainPage">
+    
+    <Views:BasePage.Resources>
+        <Converters:AspectRatioConverter x:Key="backgroundConverter" Ratio="1.77"/>
+        <Converters:AspectRatioConverter x:Key="radiusConverter" Ratio="1.95"/>
+        <Converters:MaxCharConverter x:Key="titleConverter" MaxCharCount="20"/>
+        <Converters:InvertBooleanConverter x:Key="invertBooleanConverter"/>
+        <Converters:DateTimeConverter x:Key="dateTimeConverter"/>
+    </Views:BasePage.Resources>
+    
+    <Views:BasePage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1"
+                  Style="{StaticResource gridStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Text="{Extensions:Translate Text=MainPage_NoData}"
+                           VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.ColumnSpan="2"
+                           FontSize="Medium" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" TextColor="Gray"
+                           IsVisible="{Binding IsBusy, Converter={StaticResource invertBooleanConverter}}"/>
+                
+                <ListView x:Name="moviesListView" ItemsSource="{Binding Movies, Mode=OneWay}" ItemAppearing="ListView_ItemAppearing" 
+                          ItemDisappearing="MoviesListView_ItemDisappearing" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2"
+                          Style="{StaticResource listViewStyle}" ItemTapped="MoviesListView_ItemTapped" HasUnevenRows="True" ItemSelected="ListView_ItemSelected"
+                          IsPullToRefreshEnabled="True" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Style="{StaticResource gridStyle}" AutomationId="MovieItem">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{Binding Source={x:Reference backgroundImage},
+                                            Path=Width, Converter={StaticResource backgroundConverter}}"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <BoxView Color="Black" VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0"
+                                             HorizontalOptions="FillAndExpand"/>
+
+                                    <Label Text="{Extensions:Translate Text=MainPage_NoImage}" LineBreakMode="NoWrap" HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand" TextColor="White" Style="{StaticResource labelStyle}" Grid.Row="0" Grid.Column="0"/>
+
+                                    <ImageLoading:CachedImage x:Name="backgroundImage" HorizontalOptions="FillAndExpand"
+                                                                VerticalOptions="FillAndExpand" Grid.Row="0" Grid.Column="0"
+                                                                Aspect="AspectFill" Source="{Binding Path=Image}" />
+
+                                    <Views:GradientMask HorizontalOptions="FillAndExpand" BottomColor="Black"
+                                                        VerticalOptions="FillAndExpand" TopColor="Transparent"
+                                                        Grid.Row="0" Grid.Column="0" Opacity="1"/>
+
+                                    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="EndAndExpand" Padding="10" Grid.Row="0" Grid.Column="0">
+                                            
+                                        <StackLayout Orientation="Horizontal" Style="{StaticResource stackLayoutStyle}">
+
+                                            <Label Text="{Extensions:Translate Text=MainPage_Title}" LineBreakMode="NoWrap"
+                                                   TextColor="White" FontAttributes="Bold" Style="{StaticResource labelStyle}"/>
+
+                                            <Label Text="{Binding Name, Converter={StaticResource titleConverter}}" TextColor="White"
+                                                   LineBreakMode="NoWrap" FontAttributes="Bold" Style="{StaticResource labelStyle}"/>
+
+                                        </StackLayout>
+
+                                        <StackLayout Orientation="Horizontal" Style="{StaticResource stackLayoutStyle}">
+                                            <Label Text="{Extensions:Translate Text=MainPage_Genre}"  LineBreakMode="NoWrap"
+                                                   TextColor="LightGray" Style="{StaticResource labelStyle}"/>
+
+                                            <Label Text="{Binding Genre}" LineBreakMode="NoWrap" TextColor="LightGray"
+                                                   Style="{StaticResource labelStyle}"/>
+                                        </StackLayout>
+
+                                        <StackLayout Orientation="Horizontal" Style="{StaticResource stackLayoutStyle}">
+                                            <Label Text="{Extensions:Translate Text=MainPage_ReleaseDate}"
+                                                FontSize="Small" TextColor="LightGray" Style="{StaticResource labelStyle}"/>
+
+                                            <Label Text="{Binding ReleaseDate, Converter={StaticResource dateTimeConverter}}"
+                                                FontSize="Small" TextColor="LightGray" Style="{StaticResource labelStyle}"/>
+                                        </StackLayout>
+                                            
+                                    </StackLayout>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                
+                <Views:SearchBarLayout SearchCommand="{Binding SearchCommand}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2"/>
+
+                <StackLayout Grid.Column="1" Grid.Row="1" Padding="10" Style="{StaticResource stackLayoutStyle}">
+                    <Views:TopListButton x:Name="topListButton" IsVisible="False" Pressed="TopListButton_Pressed"
+                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                         CornerRadius="{Binding Source={x:Reference topListButton},
+                                                Path=Width, Converter={StaticResource radiusConverter}}"/>
+                </StackLayout>
+                
+            </Grid>
+            
+            <Views:BusyView IsVisible="{Binding IsBusy}"/>
+            
+        </AbsoluteLayout>
+    </Views:BasePage.Content>  
+</Views:BasePage>

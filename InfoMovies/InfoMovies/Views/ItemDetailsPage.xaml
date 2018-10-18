@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Views:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                x:Class="InfoMovies.Views.ItemDetailsPage"
+                xmlns:Extensions="clr-namespace:InfoMovies.Extensions"
+                xmlns:Views="clr-namespace:InfoMovies.Views"
+                xmlns:ImageLoading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+    <ContentPage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ScrollView Orientation="Vertical" Style="{StaticResource scrollViewStyle}" BackgroundColor="DarkGray"
+                        AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <StackLayout Orientation="Vertical" Style="{StaticResource stackLayoutStyle}">
+                    <Grid Style="{StaticResource gridStyle}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="250"/>
+                            <RowDefinition Height="150"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30*"/>
+                            <ColumnDefinition Width="70*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Views:GradientMask TopColor="Black" BottomColor="Gray" 
+                                        Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+
+                        <ImageLoading:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                  Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Aspect="AspectFit" Source="{Binding Path=Poster}"/>
+
+                        <StackLayout Orientation="Vertical" Style="{StaticResource stackLayoutStyle}"
+                                 Grid.Row="0" Grid.Column="1" Padding="10">
+                            <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"
+                                                LineBreakMode="NoWrap" VerticalTextAlignment="End" Style="{StaticResource labelStyle}"/>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Vertical" Style="{StaticResource stackLayoutStyle}"
+                                 Grid.Row="1" Grid.Column="1" Padding="10">
+                            <Label Text="{Extensions:Translate Text=ItemDetailsPage_Overview}" FontAttributes="Bold" 
+                                                LineBreakMode="NoWrap" TextColor="White" VerticalTextAlignment="Start" Style="{StaticResource labelStyle}"/>
+
+                            <Label Text="{Binding Overview}" TextColor="White" VerticalTextAlignment="Start"
+                                    FontSize="Small" Style="{StaticResource labelStyle}"/>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Vertical" Style="{StaticResource stackLayoutStyle}"
+                                 Grid.Row="2" Grid.Column="1" Padding="10">
+                            <Label Text="{Extensions:Translate Text=ItemDetailsPage_Crew}" FontAttributes="Bold" 
+                               TextColor="White" VerticalTextAlignment="Start" Style="{StaticResource labelStyle}"/>
+
+                            <ScrollView Orientation="Horizontal" BindingContext="{Binding Credits}" Style="{StaticResource scrollViewStyle}">
+                                <Views:HorizontalListView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                          BackgroundColor="DarkGray" ItemsSource="{Binding CrewCollection}">
+                                    <Views:HorizontalListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Style="{StaticResource stackLayoutStyle}" Padding="10" Orientation="Vertical">
+                                                <StackLayout Orientation="Horizontal" Style="{StaticResource stackLayoutStyle}">
+                                                    <Label Style="{StaticResource labelStyle}" Text="{Extensions:Translate Text=ItemDetailsPage_Name}"
+                                                                        TextColor="White" HorizontalOptions="Start"
+                                                                        LineBreakMode="NoWrap" VerticalTextAlignment="Center" FontSize="Micro"/>
+                                                    <Label Style="{StaticResource labelStyle}"  Text="{Binding Name}" TextColor="White" HorizontalOptions="End"
+                                                                        LineBreakMode="NoWrap" VerticalTextAlignment="Center" FontSize="Micro"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal" Style="{StaticResource stackLayoutStyle}">
+                                                    <Label Style="{StaticResource labelStyle}" Text="{Extensions:Translate Text=ItemDetailsPage_Job}"
+                                                                        TextColor="White" HorizontalOptions="Start"
+                                                                        LineBreakMode="NoWrap" VerticalTextAlignment="Center" FontSize="Micro"/>
+                                                    <Label Style="{StaticResource labelStyle}" Text="{Binding Job}" TextColor="White" HorizontalOptions="End"
+                                                                        LineBreakMode="NoWrap" VerticalTextAlignment="Center" FontSize="Micro"/>
+                                                </StackLayout>
+
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </Views:HorizontalListView.ItemTemplate>
+                                </Views:HorizontalListView>
+                            </ScrollView>
+
+                        </StackLayout>
+                    </Grid>
+
+                    <ScrollView Orientation="Horizontal" BindingContext="{Binding Credits}" Style="{StaticResource scrollViewStyle}">
+                        <Views:HorizontalListView Style="{StaticResource gridStyle}" BackgroundColor="DarkGray" ItemsSource="{Binding CastCollection}">
+                            <Views:HorizontalListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                 Padding="10" Orientation="Vertical">
+                                        <Grid Style="{StaticResource gridStyle}" AutomationId="MovieItem">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="150"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Color="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                                            <ImageLoading:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                                Aspect="AspectFit" Source="{Binding Path=ProfilePath}"/>
+                                        </Grid>
+                                        
+                                        <StackLayout Orientation="Horizontal" Padding="0" Style="{StaticResource stackLayoutStyle}">
+                                            <Label Style="{StaticResource labelStyle}" Text="{Extensions:Translate Text=ItemDetailsPage_Name}"
+                                                   LineBreakMode="NoWrap" TextColor="Black" VerticalTextAlignment="Center"
+                                                   HorizontalOptions="Start" FontSize="Micro"/>
+                                            <Label Style="{StaticResource labelStyle}" Text="{Binding Name}" LineBreakMode="NoWrap"
+                                                   TextColor="Black" VerticalTextAlignment="Center" HorizontalOptions="End" FontSize="Micro"/>
+                                        </StackLayout>
+
+                                        <StackLayout Orientation="Horizontal" Padding="0" Style="{StaticResource stackLayoutStyle}">
+                                            <Label Style="{StaticResource labelStyle}" Text="{Extensions:Translate Text=ItemDetailsPage_Character}"
+                                                   LineBreakMode="NoWrap" TextColor="Black" VerticalTextAlignment="Center"
+                                                   HorizontalOptions="Start" FontSize="Micro"/>
+                                            <Label Style="{StaticResource labelStyle}" Text="{Binding Character}" LineBreakMode="NoWrap" TextColor="Black"
+                                                   VerticalTextAlignment="Center" HorizontalOptions="End" FontSize="Micro"/>
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </DataTemplate>
+                            </Views:HorizontalListView.ItemTemplate>
+                        </Views:HorizontalListView>
+                    </ScrollView>
+                </StackLayout>
+            </ScrollView>
+
+            <Views:BusyView IsVisible="{Binding IsBusy}"/>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</Views:BasePage>

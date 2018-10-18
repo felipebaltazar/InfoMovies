@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms" 
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:Converters ="clr-namespace:InfoMovies.Converters"
+      xmlns:Views="clr-namespace:InfoMovies.Views"
+      xmlns:Extensions="clr-namespace:InfoMovies.Extensions"
+      x:Class="InfoMovies.Views.SearchBarLayout"
+      Style="{StaticResource gridStyle}"
+      Padding="20">
+    
+    <Grid.Resources>
+        <Converters:AspectRatioConverter x:Key="backgroundConverter" Ratio="8"/>
+        <Converters:AspectRatioConverter x:Key="radiusConverter" Ratio="1.8"/>
+    </Grid.Resources>
+    
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+
+    <Grid.RowDefinitions>
+        <RowDefinition Height="{Binding Source={x:Reference searchBar},
+            Path=Width, Converter={StaticResource backgroundConverter}}"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Button BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" MinimumHeightRequest="1"
+            BorderColor="Gray" IsEnabled="False" CornerRadius="{Binding Source={x:Reference searchBar},
+                                                Path=Height, Converter={StaticResource radiusConverter}}"/>
+
+    <StackLayout Orientation="Vertical" Style="{StaticResource stackLayoutStyle}" Grid.Row="0" Grid.Column="0" >
+        <Views:CustomSearchBar x:Name="searchBar" Placeholder="{Extensions:Translate Text=SearchLayout_Search}" FontSize="Small" 
+                               CancelButtonColor="Red" PlaceholderColor="Gray" SearchButtonPressed="SearchBar_SearchButtonPressed" TextColor="Black"
+                               TextChanged="SearchBar_TextChanged" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+    </StackLayout>
+
+</Grid>
